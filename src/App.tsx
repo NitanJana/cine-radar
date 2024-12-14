@@ -11,7 +11,7 @@ function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
-				<div className='bg-gray-900 min-h-screen text-white'>
+				<div className='bg-gray-900 min-h-screen'>
 					<Header />
 					<Routes>
 						<Route path='/' element={<HomePage />} />
