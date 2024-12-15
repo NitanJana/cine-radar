@@ -12,7 +12,7 @@ const Header = () => {
 						to='/'
 						className='flex items-center gap-2 text-xl font-bold text-white'>
 						<Film className='h-6 w-6' />
-						{siteConfig.name}
+						{siteConfig.NAME}
 					</Link>
 					<div className='ml-auto'>
 						<Link

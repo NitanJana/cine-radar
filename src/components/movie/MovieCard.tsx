@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Star } from "lucide-react";
-import { siteConfig } from "../../config/site";
-import type { Movie } from "../../services/tmdb";
+import { tmdb } from "../../services/tmdb";
+import { Movie } from "../../types/movie";
 
 interface MovieCardProps {
 	movie: Movie;
@@ -15,7 +15,6 @@ export function MovieCard({ movie }: MovieCardProps) {
 		<Link
 			to={`/movie/${movie.id}`}
 			className='group relative overflow-hidden rounded-lg bg-gray-900 transition-all hover:scale-105'>
-			
 			{/* Placeholder image */}
 			{(!isImageLoaded || !movie.poster_path) && (
 				<div
@@ -38,11 +37,7 @@ export function MovieCard({ movie }: MovieCardProps) {
 
 			{/* Actual image */}
 			<img
-				src={
-					movie.poster_path
-						? `${siteConfig.imageBaseUrl}/w500${movie.poster_path}`
-						: ""
-				}
+				src={tmdb.getPosterUrl(movie.poster_path) ?? ""}
 				alt={movie.poster_path ? movie.title : ""}
 				className={`h-full w-full object-cover transition-all 
           ${!isImageLoaded ? "opacity-0" : "opacity-100"} 

@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Loader } from "lucide-react";
 import { MovieCard } from "../components/movie/MovieCard";
-import { tmdbApi } from "../services/tmdb";
-import SearchPagination from "../components/ui/SearchPagination";
+import { tmdb } from "../services/tmdb";
+import SearchPagination from "../components/search/SearchPagination";
 
 const SearchPage = () => {
 	const [query, setQuery] = useState("");
 	const [debouncedQuery, setDebouncedQuery] = useState("");
 	const [page, setPage] = useState(1);
-	
+
 	useEffect(() => {
 		setPage(1);
 	}, [debouncedQuery]);
-	
+
 	useEffect(() => {
 		const handler = setTimeout(() => {
 			setDebouncedQuery(query);
@@ -26,7 +26,7 @@ const SearchPage = () => {
 
 	const { data, isLoading } = useQuery({
 		queryKey: ["search", debouncedQuery, page],
-		queryFn: () => tmdbApi.searchMovies(debouncedQuery, page),
+		queryFn: () => tmdb.searchMovies(debouncedQuery, page),
 		enabled: debouncedQuery.length > 0,
 	});
 
