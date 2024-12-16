@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Cake, Loader, MapPin, User2 } from "lucide-react";
 import { tmdb } from "../services/tmdb";
-import PersonCard from "../components/person/PersonCard";
+import PersonMovieCard from "../components/person/PersonMovieCard";
 
 const PersonPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -122,9 +122,9 @@ const PersonPage = () => {
 						{sortedMovies && sortedMovies.length > 0 && (
 							<div>
 								<h2 className='text-xl text-gray-400 mb-4'>Known For</h2>
-								<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+								<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
 									{sortedMovies.map((movie) => (
-										<PersonCard
+										<PersonMovieCard
 											key={movie.id}
 											movie={movie}
 										/>

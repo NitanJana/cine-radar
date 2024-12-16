@@ -23,7 +23,7 @@ const HomePage = () => {
 	});
 
 	return (
-		<div className='container mx-auto px-4 pt-20'>
+		<div className='container py-6'>
 			<section className='mb-12'>
 				<h2 className='mb-6 text-2xl font-bold text-white'>
 					Trending This Week

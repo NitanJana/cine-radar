@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { Calendar } from "lucide-react";
 import { tmdb } from "../../services/tmdb";
 
-interface PersonCardProps {
+interface PersonMovieCardProps {
 	movie: {
 		id: number;
 		title: string;
@@ -12,7 +12,7 @@ interface PersonCardProps {
 	};
 }
 
-const PersonCard=({ movie }: PersonCardProps)=> {
+const PersonMovieCard = ({ movie }: PersonMovieCardProps) => {
 	const posterUrl = tmdb.getPosterUrl(movie.poster_path);
 	const releaseYear = movie.release_date
 		? new Date(movie.release_date).getFullYear()
@@ -45,6 +45,6 @@ const PersonCard=({ movie }: PersonCardProps)=> {
 			</div>
 		</Link>
 	);
-}
+};
 
-export default PersonCard
+export default PersonMovieCard;

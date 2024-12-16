@@ -11,7 +11,6 @@ const MoviePage = () => {
 		queryKey: ["movie", id],
 		queryFn: () => tmdb.getMovie(Number(id)),
 	});
-	console.log(movie);
 
 	const { data: credits, isLoading: isLoadingCredits } = useQuery({
 		queryKey: ["movie-credits", id],

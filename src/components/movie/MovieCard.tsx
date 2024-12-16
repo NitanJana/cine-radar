@@ -11,16 +11,16 @@ interface MovieCardProps {
 export function MovieCard({ movie }: MovieCardProps) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
 
+	if (!movie.poster_path) return null;
+
 	return (
 		<Link
 			to={`/movie/${movie.id}`}
 			className='group relative overflow-hidden rounded-lg bg-gray-900 transition-all hover:scale-105'>
 			{/* Placeholder image */}
-			{(!isImageLoaded || !movie.poster_path) && (
+			{!isImageLoaded && (
 				<div
-					className={`absolute inset-0 bg-gray-800 flex items-center justify-center ${
-						movie.poster_path ? "animate-pulse" : ""
-					}`}>
+					className={`absolute inset-0 bg-gray-800 flex items-center justify-center animate-pulse`}>
 					<svg
 						className='w-1/2 h-full text-gray-600'
 						aria-hidden='true'
@@ -37,8 +37,8 @@ export function MovieCard({ movie }: MovieCardProps) {
 
 			{/* Actual image */}
 			<img
-				src={tmdb.getPosterUrl(movie.poster_path) ?? ""}
-				alt={movie.poster_path ? movie.title : ""}
+				src={tmdb.getPosterUrl(movie.poster_path)!}
+				alt={movie.title || ""}
 				className={`h-full w-full object-cover transition-all 
           ${!isImageLoaded ? "opacity-0" : "opacity-100"} 
           group-hover:opacity-50`}
