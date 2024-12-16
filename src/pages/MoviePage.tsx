@@ -77,7 +77,7 @@ const MoviePage = () => {
 
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
-								<h3 className='text-gray-400 mb-2'>Genres</h3>
+								<h2 className='text-gray-400 mb-2'>Genres</h2>
 								<div className='flex flex-wrap gap-2'>
 									{movie.genres.map((genre) => (
 										<span
@@ -91,7 +91,7 @@ const MoviePage = () => {
 
 							{movie.budget > 0 && (
 								<div>
-									<h3 className='text-gray-400 mb-2'>Budget</h3>
+									<h2 className='text-gray-400 mb-2'>Budget</h2>
 									<div className='flex items-center gap-2'>
 										<DollarSign size={20} />
 										<span>{movie.budget.toLocaleString()}</span>
