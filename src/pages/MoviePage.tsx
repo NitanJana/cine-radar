@@ -11,6 +11,7 @@ const MoviePage = () => {
 		queryKey: ["movie", id],
 		queryFn: () => tmdb.getMovie(Number(id)),
 	});
+	console.log(movie);
 
 	const { data: credits, isLoading: isLoadingCredits } = useQuery({
 		queryKey: ["movie-credits", id],
@@ -40,7 +41,7 @@ const MoviePage = () => {
 				<div className='absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent' />
 			</div>
 
-			<div className='container mx-auto px-4 -mt-32 relative z-10'>
+			<div className='container -mt-32 relative z-10'>
 				<div className='flex flex-col md:flex-row gap-8'>
 					<img
 						src={tmdb.getPosterUrl(movie.poster_path) ?? ""}

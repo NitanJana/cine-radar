@@ -1,0 +1,50 @@
+import { Link } from "react-router";
+import { Calendar } from "lucide-react";
+import { tmdb } from "../../services/tmdb";
+
+interface PersonCardProps {
+	movie: {
+		id: number;
+		title: string;
+		poster_path: string | null;
+		character: string;
+		release_date: string;
+	};
+}
+
+const PersonCard=({ movie }: PersonCardProps)=> {
+	const posterUrl = tmdb.getPosterUrl(movie.poster_path);
+	const releaseYear = movie.release_date
+		? new Date(movie.release_date).getFullYear()
+		: null;
+
+	return (
+		<Link
+			to={`/movie/${movie.id}`}
+			className='bg-gray-800 rounded-lg overflow-hidden transition-transform hover:scale-105'>
+			{posterUrl ? (
+				<img
+					src={posterUrl}
+					alt={movie.title}
+					className='w-full aspect-[2/3] object-cover'
+				/>
+			) : (
+				<div className='w-full aspect-[2/3] bg-gray-700 flex items-center justify-center'>
+					<span className='text-gray-500'>No Image</span>
+				</div>
+			)}
+			<div className='p-3'>
+				<h3 className='font-medium text-sm'>{movie.title}</h3>
+				<p className='text-sm text-gray-400 mt-1'>{movie.character}</p>
+				{releaseYear && (
+					<div className='flex items-center gap-1 text-gray-500 text-sm mt-2'>
+						<Calendar size={14} />
+						<span>{releaseYear}</span>
+					</div>
+				)}
+			</div>
+		</Link>
+	);
+}
+
+export default PersonCard

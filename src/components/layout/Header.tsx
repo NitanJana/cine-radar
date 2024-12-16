@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { Film, Search } from "lucide-react";
 import { siteConfig } from "../../config/site";
-// import BackButton from "./BackButton";
 
 const Header = () => {
 	return (
@@ -27,7 +26,6 @@ const Header = () => {
 					</div>
 				</div>
 			</nav>
-			{/* <BackButton /> */}
 		</>
 	);
 };

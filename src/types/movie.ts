@@ -13,7 +13,7 @@ export interface Movie {
 	budget: number;
 }
 
-export interface MovieResponse {
+export interface MovieListResponse {
 	page: number;
 	results: Movie[];
 	total_pages: number;
