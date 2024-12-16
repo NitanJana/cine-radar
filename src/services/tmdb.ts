@@ -1,76 +1,58 @@
+import axios from "axios";
 import { siteConfig } from "../config/site";
 import { MovieCredits } from "../types/cast";
 import { Movie, MovieListResponse } from "../types/movie";
 import { Person, PersonCredits } from "../types/person";
-const { API_KEY, BASE_URL, IMAGE_BASE_URL } = siteConfig;
+const { ACCESS_TOKEN, BASE_URL, IMAGE_BASE_URL } = siteConfig;
+
+const api = axios.create({
+	baseURL: BASE_URL,
+	headers: {
+		Authorization: `Bearer ${ACCESS_TOKEN}`,
+		accept: "application/json",
+	},
+});
 
 export const tmdb = {
 	async getTrending() {
-		const response = await fetch(
-			`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`
-		);
-		if (!response.ok) {
-			throw new Error("Failed to fetch trending movies");
-		}
-		return response.json() as Promise<MovieListResponse>;
+		const { data } = await api.get<MovieListResponse>("/trending/movie/week");
+		return data;
 	},
 
 	async getPopular(page = 1) {
-		const response = await fetch(
-			`${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`
-		);
-		if (!response.ok) {
-			throw new Error("Failed to fetch popular movies");
-		}
-		return response.json() as Promise<MovieListResponse>;
+		const { data } = await api.get<MovieListResponse>("/movie/popular", {
+			params: { page },
+		});
+		return data;
 	},
 
 	async searchMovies(query: string, page = 1) {
-		const response = await fetch(
-			`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
-				query
-			)}&page=${page}`
-		);
-		if (!response.ok) {
-			throw new Error("Failed to search movies");
-		}
-		return response.json() as Promise<MovieListResponse>;
+		const { data } = await api.get<MovieListResponse>("/search/movie", {
+			params: { query, page },
+		});
+		return data;
 	},
 
 	async getMovie(id: number) {
-		const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`);
-		if (!response.ok) {
-			throw new Error("Failed to fetch movie details");
-		}
-		return response.json() as Promise<Movie>;
+		const { data } = await api.get<Movie>(`/movie/${id}`);
+		return data;
 	},
 
 	async getMovieCredits(id: number) {
-		const response = await fetch(
-			`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`
-		);
-		if (!response.ok) {
-			throw new Error("Failed to fetch movie credit details");
-		}
-		return response.json() as Promise<MovieCredits>;
+		const { data } = await api.get<MovieCredits>(`/movie/${id}/credits`);
+		return data;
 	},
 
 	async getPersonDetails(id: number) {
-		const response = await fetch(`${BASE_URL}/person/${id}?api_key=${API_KEY}`);
-		if (!response.ok) {
-			throw new Error("Failed to get person details");
-		}
-		return response.json() as Promise<Person>;
+		const { data } = await api.get<Person>(`/person/${id}`);
+		return data;
 	},
 
 	async getPersonCredits(id: number) {
-		const response = await fetch(
-			`${BASE_URL}/person/${id}/movie_credits?api_key=${API_KEY}`
+		const { data } = await api.get<PersonCredits>(
+			`/person/${id}/movie_credits`
 		);
-		if (!response.ok) {
-			throw new Error("Failed to get person credits");
-		}
-		return response.json() as Promise<PersonCredits>;
+		return data;
 	},
 
 	getPosterUrl(path: string | null, size: "w500" | "original" = "w500") {
