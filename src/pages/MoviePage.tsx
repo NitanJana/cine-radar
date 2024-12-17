@@ -1,15 +1,27 @@
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { tmdb } from "../services/tmdb";
-import { Clock, Star, DollarSign, Loader, Calendar } from "lucide-react";
+import {
+	Clock,
+	Star,
+	DollarSign,
+	Loader,
+	Calendar,
+	Clapperboard,
+} from "lucide-react";
 import CastList from "../components/movie/CastList";
+import { useEffect, useState } from "react";
 
 const MoviePage = () => {
 	const { id } = useParams<{ id: string }>();
 
+	const [trailerKey, setTrailerKey] = useState<string | null>(null);
+	const [showTrailer, setShowTrailer] = useState(false);
+
 	const { data: movie, isLoading: isLoadingMovie } = useQuery({
 		queryKey: ["movie", id],
 		queryFn: () => tmdb.getMovie(Number(id)),
+		enabled: !!id,
 	});
 
 	const { data: credits, isLoading: isLoadingCredits } = useQuery({
@@ -18,7 +30,22 @@ const MoviePage = () => {
 		enabled: !!id,
 	});
 
-	const isLoading = isLoadingMovie || isLoadingCredits;
+	const { data: videos, isLoading: isLoadingVideos } = useQuery({
+		queryKey: ["movie-videos", id],
+		queryFn: () => tmdb.getMovieVideos(Number(id)),
+		enabled: !!id,
+	});
+
+	useEffect(() => {
+		if (videos?.results) {
+			const trailer = videos.results.find(
+				(video) => video.site === "YouTube" && video.type === "Trailer"
+			);
+			if (trailer) setTrailerKey(trailer.key);
+		}
+	}, [videos]);
+
+	const isLoading = isLoadingMovie || isLoadingCredits || isLoadingVideos;
 
 	if (isLoading) {
 		return (
@@ -99,6 +126,19 @@ const MoviePage = () => {
 								</div>
 							)}
 						</div>
+
+						{/* Watch Trailer Button */}
+						{trailerKey && (
+							<button
+								onClick={() => setShowTrailer(true)}
+								className='flex items-center gap-3 py-2 px-4 mt-6 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 hover:shadow-lg transform transition-all duration-300 border-b-4 border-red-500 hover:border-red-600'>
+								<Clapperboard
+									size={20}
+									strokeWidth={2}
+								/>
+								<span className='text-lg'>Watch Trailer</span>
+							</button>
+						)}
 					</div>
 				</div>
 
@@ -106,6 +146,27 @@ const MoviePage = () => {
 					<CastList cast={credits.cast} />
 				)}
 			</div>
+
+			{/* Trailer Modal */}
+			{showTrailer && trailerKey && (
+				<div
+					className='fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50'
+					onClick={(e) => {
+						if (e.target === e.currentTarget) setShowTrailer(false);
+					}}>
+					<dialog
+						open
+						className='relative w-[90%] md:w-[70%] aspect-video rounded-lg'
+						onClose={() => setShowTrailer(false)}>
+						<iframe
+							width='100%'
+							height='100%'
+							src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&modestbranding=1&showinfo=0&controls=1`}
+							allowFullScreen
+							title='YouTube video player'></iframe>
+					</dialog>
+				</div>
+			)}
 		</div>
 	);
 };

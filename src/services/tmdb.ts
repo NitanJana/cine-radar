@@ -3,6 +3,7 @@ import { siteConfig } from "../config/site";
 import { MovieCredits } from "../types/cast";
 import { Movie, MovieListResponse } from "../types/movie";
 import { Person, PersonCredits } from "../types/person";
+import { VideoResponse } from "../types/video";
 const { ACCESS_TOKEN, BASE_URL, IMAGE_BASE_URL } = siteConfig;
 
 const api = axios.create({
@@ -35,6 +36,11 @@ export const tmdb = {
 
 	async getMovie(id: number) {
 		const { data } = await api.get<Movie>(`/movie/${id}`);
+		return data;
+	},
+
+	async getMovieVideos(id: number) {
+		const { data } = await api.get<VideoResponse>(`/movie/${id}/videos`);
 		return data;
 	},
 
