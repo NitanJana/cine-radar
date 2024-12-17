@@ -6,7 +6,6 @@ import PersonMovieCard from "../components/person/PersonMovieCard";
 
 const PersonPage = () => {
 	const { id } = useParams<{ id: string }>();
-	// const navigate = useNavigate();
 
 	const { data: person, isLoading: isLoadingPerson } = useQuery({
 		queryKey: ["person", id],
