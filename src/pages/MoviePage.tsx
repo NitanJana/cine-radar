@@ -156,12 +156,14 @@ const MoviePage = () => {
 					}}>
 					<dialog
 						open
+						autoFocus
 						className='relative w-[90%] md:w-[70%] aspect-video rounded-lg'
 						onClose={() => setShowTrailer(false)}>
 						<iframe
 							width='100%'
 							height='100%'
 							src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&modestbranding=1&showinfo=0&controls=1`}
+							className='rounded-lg'
 							allowFullScreen
 							title='YouTube video player'></iframe>
 					</dialog>
