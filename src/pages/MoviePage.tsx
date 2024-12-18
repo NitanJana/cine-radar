@@ -57,6 +57,8 @@ const MoviePage = () => {
 
 	if (!movie) return null;
 
+	const isFutureRelease = new Date(movie.release_date) > new Date();
+
 	return (
 		<div className='min-h-screen bg-gray-900 text-white pb-6'>
 			<div
@@ -127,8 +129,8 @@ const MoviePage = () => {
 							)}
 						</div>
 
-						{/* Watch Trailer Button */}
-						{trailerKey && (
+						{/* Watch Trailer or Coming Soon Button */}
+						{trailerKey && !isFutureRelease && (
 							<button
 								onClick={() => setShowTrailer(true)}
 								className='flex items-center gap-3 py-2 px-4 mt-6 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 hover:shadow-lg transform transition-all duration-300 border-b-4 border-red-500 hover:border-red-600'>
@@ -138,6 +140,16 @@ const MoviePage = () => {
 								/>
 								<span className='text-lg'>Watch Trailer</span>
 							</button>
+						)}
+
+						{isFutureRelease && (
+							<div className='max-w-[200px] flex items-center gap-3 py-2 px-4 mt-6 bg-blue-600 text-white font-bold rounded-lg shadow-md'>
+								<Clapperboard
+									size={20}
+									strokeWidth={2}
+								/>
+								<span className='text-lg'>Coming Soon</span>
+							</div>
 						)}
 					</div>
 				</div>
@@ -157,7 +169,7 @@ const MoviePage = () => {
 					<dialog
 						open
 						autoFocus
-						className='relative w-[90%] md:w-[70%] aspect-video rounded-lg'
+						className='relative w-[90%] md:w-[70%] aspect-video rounded-lg bg-black'
 						onClose={() => setShowTrailer(false)}>
 						<iframe
 							width='100%'
@@ -174,3 +186,4 @@ const MoviePage = () => {
 };
 
 export default MoviePage;
+

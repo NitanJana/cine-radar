@@ -11,6 +11,8 @@ export interface Movie {
 	tagline: string;
 	genres: { id: number; name: string }[];
 	budget: number;
+	popularity: number;
+	adult: boolean;
 }
 
 export interface MovieListResponse {

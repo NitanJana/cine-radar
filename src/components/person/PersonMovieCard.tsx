@@ -17,11 +17,20 @@ const PersonMovieCard = ({ movie }: PersonMovieCardProps) => {
 	const releaseYear = movie.release_date
 		? new Date(movie.release_date).getFullYear()
 		: null;
+	const releaseDate = movie.release_date
+		? new Date(movie.release_date)
+		: null;
+	const isFutureRelease = releaseDate ? releaseDate > new Date() : false;
 
 	return (
 		<Link
 			to={`/movie/${movie.id}`}
-			className='bg-gray-800 rounded-lg overflow-hidden transition-transform hover:scale-105'>
+			className='bg-gray-800 rounded-lg overflow-hidden transition-transform hover:scale-105 relative'>
+			{isFutureRelease && (
+				<div className='absolute inset-x-0 top-0 bg-blue-500 text-center text-white font-bold py-1'>
+					Coming Soon
+				</div>
+			)}
 			{posterUrl ? (
 				<img
 					src={posterUrl}
@@ -48,3 +57,4 @@ const PersonMovieCard = ({ movie }: PersonMovieCardProps) => {
 };
 
 export default PersonMovieCard;
+

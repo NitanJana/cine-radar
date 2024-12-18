@@ -13,10 +13,17 @@ export function MovieCard({ movie }: MovieCardProps) {
 
 	if (!movie.poster_path) return null;
 
+	const isFutureRelease = new Date(movie.release_date) > new Date();
+	
 	return (
 		<Link
 			to={`/movie/${movie.id}`}
 			className='group relative overflow-hidden rounded-lg bg-gray-900 transition-all hover:scale-105'>
+			{isFutureRelease && (
+				<div className='absolute inset-x-0 top-0 bg-blue-500 text-center text-white font-bold py-1'>
+					Coming Soon
+				</div>
+			)}
 			{/* Placeholder image */}
 			{!isImageLoaded && (
 				<div
