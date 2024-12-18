@@ -1,8 +1,10 @@
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Cake, Loader, MapPin, User2 } from "lucide-react";
+import { Cake, ChevronDown, ChevronUp, Loader, MapPin, User2 } from "lucide-react";
 import { tmdb } from "../services/tmdb";
 import PersonMovieCard from "../components/person/PersonMovieCard";
+
+import { useState } from "react";
 
 const PersonPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -20,6 +22,9 @@ const PersonPage = () => {
 	});
 
 	const isLoading = isLoadingPerson || isLoadingCredits;
+
+	const [showAllAliases, setShowAllAliases] = useState(false);
+	const [showFullBiography, setShowFullBiography] = useState(false);
 
 	if (isLoading) {
 		return (
@@ -97,14 +102,24 @@ const PersonPage = () => {
 						{person.also_known_as.length > 0 && (
 							<div className='mb-4'>
 								<h2 className='text-xl text-gray-400 mb-2'>Also Known As</h2>
-								<div className='flex flex-wrap gap-2'>
-									{person.also_known_as.map((name, index) => (
+								<div className='flex flex-wrap gap-1'>
+									{(showAllAliases
+										? person.also_known_as
+										: person.also_known_as.slice(0, 5)
+									).map((name, index) => (
 										<span
 											key={index}
-											className='px-3 py-1 bg-gray-800 rounded-full text-sm'>
+											className='px-3 py-1 bg-gray-800 rounded-full text-xs'>
 											{name}
 										</span>
 									))}
+									{person.also_known_as.length > 5 && (
+										<button
+											onClick={() => setShowAllAliases(!showAllAliases)}
+											className='px-3 py-1 bg-blue-500 text-white rounded-full text-xs hover:bg-blue-600'>
+											{showAllAliases ? "Show Less" : "Show More"}
+										</button>
+									)}
 								</div>
 							</div>
 						)}
@@ -112,9 +127,33 @@ const PersonPage = () => {
 						{person.biography && (
 							<div className='mb-8'>
 								<h2 className='text-xl text-gray-400 mb-2'>Biography</h2>
-								<p className='text-gray-300 whitespace-pre-line'>
-									{person.biography}
-								</p>
+								<div className='relative'>
+									<div
+										className={`text-gray-300 whitespace-pre-line ${
+											showFullBiography ? "" : "line-clamp-5 overflow-hidden"
+										}`}>
+										{person.biography}
+									</div>
+									{/* Gradient at the bottom */}
+									{!showFullBiography && (
+										<div className='absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none' />
+									)}
+								</div>
+								<button
+									onClick={() => setShowFullBiography(!showFullBiography)}
+									className='mt-2 text-blue-500 hover:underline flex items-center'>
+									{showFullBiography ? (
+										<>
+											Show Less
+											<ChevronUp className='mr-2' />
+										</>
+									) : (
+										<>
+											Read More
+											<ChevronDown className='mr-2' />
+										</>
+									)}
+								</button>
 							</div>
 						)}
 
