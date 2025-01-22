@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Loader } from "lucide-react";
 import { MovieCard } from "../components/movie/MovieCard";
@@ -6,14 +6,9 @@ import { tmdb } from "../services/tmdb";
 import SearchPagination from "../components/search/SearchPagination";
 
 const SearchPage = () => {
-	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [query, setQuery] = useState("");
 	const [debouncedQuery, setDebouncedQuery] = useState("");
 	const [page, setPage] = useState(1);
-
-	useEffect(() => {
-		searchInputRef.current?.focus();
-	}, []);
 
 	useEffect(() => {
 		setPage(1);
@@ -50,7 +45,7 @@ const SearchPage = () => {
 						type='text'
 						placeholder='Search movies...'
 						value={query}
-						ref={searchInputRef}
+						autoFocus
 						onInput={(e) => setQuery(e.currentTarget.value)}
 						className='w-full rounded-lg bg-gray-800 py-3 pl-12 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
 					/>
@@ -92,4 +87,3 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
-
